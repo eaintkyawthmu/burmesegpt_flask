@@ -2,7 +2,6 @@ import json
 import os
 import requests
 from flask import Flask, jsonify, request, send_from_directory
-
 # Load model directly
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
@@ -49,6 +48,6 @@ def generate_api():
 @app.route('/<path:path>')
 def serve_static(path):
     return send_from_directory('web', path)
-
+    
 if __name__ == "__main__":
     app.run(debug=True)
