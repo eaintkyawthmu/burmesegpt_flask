@@ -6,7 +6,7 @@ tokenizer = AutoTokenizer.from_pretrained("WYNN747/Burmese-GPT-main-sentence")
 model = AutoModelForCausalLM.from_pretrained("WYNN747/Burmese-GPT-main-sentence")
 
 # Initialize the text generation pipeline
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
 def load_generator():
     generator = pipeline('text-generation', model=model, tokenizer=tokenizer, device=0)
     return generator
@@ -26,7 +26,10 @@ if generate_button and prompt:
         generated_texts = generator(prompt,
                                     max_length=max_length,
                                     temperature=temperature,
-                                    num_return_sequences=num_return_sequences)
+                                    num_return_sequences=num_return_sequences,
+                                    truncation=True,
+                                    do_sample=True)
+        
         for i, text in enumerate(generated_texts):
             st.write(f"Generated Text {i+1}:")
             st.write(text['generated_text'])
